@@ -1,8 +1,8 @@
 ---
-title: 上传图像转换为webp
+title: 通用rest接口生成器
 group:
-  path: /image
-  title: 图像处理
+  path: /url
+  title: 网络请求
 
 nav:
   title: 组件库

@@ -39,6 +39,7 @@
     "src"
   ],
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
@@ -60,6 +61,7 @@
     "gh-pages": "^3.0.0",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.1",
+    "umi-request": "^1.4.0",
     "yorkie": "^2.0.0"
   }
 }

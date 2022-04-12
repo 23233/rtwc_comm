@@ -35,8 +35,7 @@
   "files": [
     "dist",
     "lib",
-    "es",
-    "src"
+    "es"
   ],
   "publishConfig": {
     "access": "public",

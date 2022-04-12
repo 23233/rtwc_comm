@@ -31,10 +31,6 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "dependencies": {
-    "image-blob-reduce": "^4.1.0",
-    "react": "^16.12.0 || ^17.0.0"
-  },
   "files": [
     "dist",
     "lib",
@@ -44,6 +40,11 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
+  "dependencies": {
+    "image-blob-reduce": "^4.1.0",
+    "react": "^16.12.0 || ^17.0.0"
+  },
+  "sideEffects": ["./src/**/*.less","./src/**/*.scss"],
   "devDependencies": {
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",

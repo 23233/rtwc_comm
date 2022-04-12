@@ -1,6 +1,8 @@
 import {defineConfig} from 'dumi';
 import * as path from "path";
 
+let BaseUrl = "/rtwc_comm"
+
 export default defineConfig({
   title: '无ui通用抽象业务代码',
   favicon:
@@ -9,5 +11,7 @@ export default defineConfig({
   outputPath: 'docs-dist',
   mode: 'site',
   // more config: https://d.umijs.org/config
+  base: BaseUrl,
+  publicPath: BaseUrl + '/', // 打包文件时，引入地址生成 publicPath/xxx.js
 
 });

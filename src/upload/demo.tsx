@@ -8,8 +8,8 @@ const sdk = new CosSdk({
   Timeout: 20 * 1000,
   UploadCheckContentMd5: true,
   UploadAddMetaMd5: true,
-  getAuthorization: async (options, callback) => {
-    console.log('进入getAuthorization');
+  // 如果用过匿名函数没有this的上下文
+  getAuthorization: function (options, callback) {
     callback({
       TmpSecretId: 'sdf88e',
       TmpSecretKey: '8394dfuijg',

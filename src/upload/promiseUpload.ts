@@ -60,11 +60,11 @@ const runImgUpload = async (options: options) => {
     return;
   }
   const result: uploadItem = {
-    origin: cos.visit + originResult.options.Key,
+    origin: cos.visitHost + originResult.options.Key,
   };
 
   if (file?.preview) {
-    result.thumbnail = cos.visit + (<any>file.preview)._encrypt_name;
+    result.thumbnail = cos.visitHost + (<any>file.preview)._encrypt_name;
   }
 
   options?.onSuccess && options?.onSuccess(result);

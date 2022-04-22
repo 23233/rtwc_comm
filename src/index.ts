@@ -10,7 +10,7 @@ export { default as useImageUploads } from './upload/useImageUploads';
 export { default as runImgUpload } from './upload/promiseUpload';
 
 export { default as useRipple } from './click/useRipple';
-export { default as RippleView } from './click/RippleView';
+export { default as RippleView } from './click/rippleView';
 
 export { default as useClipboard } from './clipboard/useClipboard';
 

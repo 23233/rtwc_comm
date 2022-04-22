@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { RippleOptions } from './useRipple';
-import { useRipple } from '@rtwc/comm';
+import useRipple, { RippleOptions } from './useRipple';
 
 interface p extends RippleOptions {
   children: React.ReactNode;

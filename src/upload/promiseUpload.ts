@@ -2,7 +2,7 @@ import { CosSdk } from '@rtwc/comm';
 import { imgFileUploadItem, uploadItem } from './useImageUploads';
 import { UploadFileItemParams } from 'cos-js-sdk-v5';
 
-interface options {
+export interface runImgOptions {
   cos: CosSdk;
   file: imgFileUploadItem;
   // 上传成功的回调
@@ -20,7 +20,7 @@ interface options {
 }
 
 // 进行图片上传
-const runImgUpload = async (options: options) => {
+const runImgUpload = async (options: runImgOptions) => {
   const { cos, file } = options;
 
   const genUploadParams = (file: File) => {

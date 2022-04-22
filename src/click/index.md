@@ -11,3 +11,5 @@ nav:
 Demo
 
 <code src="./demo.tsx" />
+
+<API src="./rippleView.tsx"></API>

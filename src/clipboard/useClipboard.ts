@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-interface p {
+export interface useClipParams {
   updateFrequency?: number; // default 1s 1000
   onReadError?: (reason: Error) => any;
   onlyWrite?: boolean;
 }
 
-interface ClipboardResult {
+export interface ClipboardResult {
   clipboard: string;
   copyToClipboard: (
     clipboardContent: string,
@@ -15,7 +15,7 @@ interface ClipboardResult {
   ) => void;
 }
 
-const useClipboard = (props?: p): ClipboardResult => {
+const useClipboard = (props?: useClipParams): ClipboardResult => {
   const [clipboard, setClipboardContent] = useState<string>('');
 
   const copyToClipboard = (

@@ -8,7 +8,7 @@ export interface uploadItem {
   thumbnail?: string;
 }
 
-interface result {
+export interface uploadResult {
   msg: string;
   status: number;
   process: number;
@@ -29,7 +29,7 @@ export interface imgFileUploadItem {
 }
 
 // 通用图片上传
-const useImageUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options): result => {
+const useImageUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options): uploadResult => {
   const [msg, setMsg] = useState<string>(''); // 状态说明
   const [process, setProcess] = useState<number>(0); // 上传的进度
   const [status, setStatus] = useState<number>(0); // 0待上传 1上传中 2成功 3错误

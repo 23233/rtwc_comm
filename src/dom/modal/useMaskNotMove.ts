@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface resp {
+export interface maskNoMoveResult {
   run: () => void;
   restore: () => void;
   running: boolean;
 }
 
 // 对body加入touch 防止有些傻逼浏览器滑动时控制浏览器前进后退
-const useMaskNotMove = (manual = false): resp => {
+const useMaskNotMove = (manual = false): maskNoMoveResult => {
   const nowBodyProp = useRef<Record<string, any>>({});
   const [running, setRunning] = useState<boolean>(false);
 

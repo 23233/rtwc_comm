@@ -11,3 +11,5 @@ nav:
 Demo:
 
 <code src="./demo.tsx" />
+
+<API src="./useClipboard.ts"></API>

@@ -9,3 +9,5 @@ nav:
 ---
 
 Demo 主要解决滚动透传的问题 <code src="./demo.tsx" />
+
+<API src="./useMaskNotMove.ts"></API>

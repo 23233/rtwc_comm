@@ -8,3 +8,5 @@ nav:
 ---
 
 <code src="./demo.tsx"></code>
+
+<API src="./useImageUploads.ts"></API>

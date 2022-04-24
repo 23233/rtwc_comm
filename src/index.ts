@@ -4,8 +4,7 @@ export { imageToWebp } from './image/conv';
 export type { webpConvResult } from './image/conv';
 export * as imageTools from './image/tools';
 
-export { default as restApiGen, genGeoGetParams } from './req/restApiGen';
-export type { Resp } from './req/restApiGen';
+export { default as restApiGen, genGeoGetParams, Resp } from './req/restApiGen';
 
 export { default as CosSdk } from './upload/cos_sdk';
 

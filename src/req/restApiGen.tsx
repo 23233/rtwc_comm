@@ -16,7 +16,7 @@ export const genGeoGetParams = (
   return p;
 };
 
-interface response<T = any> {
+export interface Resp<T = any> {
   data: T;
   response: Response;
 }
@@ -35,29 +35,29 @@ class RestApiGen {
     this.Req = Req;
   }
 
-  get = (params?: Record<string, unknown>): Promise<response> => {
+  get = (params?: Record<string, unknown>): Promise<Resp> => {
     return this.Req.get(this.url, {
       params,
     });
   };
 
-  post = (data: any): Promise<response> => {
+  post = (data: any): Promise<Resp> => {
     return this.Req.post(this.url, {
       data,
     });
   };
 
-  put = (mid: string, data: any): Promise<response> => {
+  put = (mid: string, data: any): Promise<Resp> => {
     return this.Req.put(`${this.url}/${mid}`, {
       data,
     });
   };
 
-  delete = (mid: string): Promise<response> => {
+  delete = (mid: string): Promise<Resp> => {
     return this.Req.delete(`${this.url}/${mid}`);
   };
 
-  getSingle = (mid: string): Promise<response> => {
+  getSingle = (mid: string): Promise<Resp> => {
     return this.Req.get(`${this.url}/${mid}`);
   };
 

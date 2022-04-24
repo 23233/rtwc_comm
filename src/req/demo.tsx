@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { restApiGen } from '@rtwc/comm';
+import { Resp, restApiGen } from '@rtwc/comm';
 import { extend } from 'umi-request';
 
 const request = extend({
@@ -12,13 +12,13 @@ interface p {
 
 const V: React.FC<p> = ({ ...props }) => {
   const r = new restApiGen('/api/v1', request);
-  const [resp, setResp] = useState<Array<Response>>([]);
+  const [resp, setResp] = useState<Array<Resp>>([]);
 
   const run = async () => {
     const g = await r.get();
     const p = await r.post({});
     const put = await r.put('123312123', 'asd');
-    setResp([g.response, p.response, put.response]);
+    setResp([g, p, put]);
   };
 
   return (
@@ -30,7 +30,7 @@ const V: React.FC<p> = ({ ...props }) => {
           return (
             <div key={i}>
               <div>
-                {d.status} {d.url}{' '}
+                {d.response?.status} {d.response?.url}
               </div>
             </div>
           );

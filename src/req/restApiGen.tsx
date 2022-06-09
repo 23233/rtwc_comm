@@ -201,7 +201,7 @@ export class RestParams {
   }
 
   ToObj() {
-    return Object.fromEntries(this.u) as Object;
+    return Object.fromEntries(this.u) as Record<string, any>;
   }
 
   Op(field: string, value: any, op: RestParamsOptions | string) {

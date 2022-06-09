@@ -200,6 +200,10 @@ export class RestParams {
     return this.u.toString();
   }
 
+  ToObj() {
+    return Object.fromEntries(this.u) as Object;
+  }
+
   Op(field: string, value: any, op: RestParamsOptions | string) {
     this.u.set(`${field}_${op}_`, value);
     return this;

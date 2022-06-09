@@ -42,8 +42,9 @@ const V: React.FC<p> = ({ ...props }) => {
 
       <div>
         <h2>参数构建: </h2>
-        <pre>{a.String()}</pre>
-        <pre>{a.JoinParams('/sdjfiw/fdifi')}</pre>
+        <pre>默认string:{a.String()}</pre>
+        <pre>join参数:{a.JoinParams('/sdjfiw/fdifi')}</pre>
+        <pre>JSON对象:{JSON.stringify(a.ToObj())}</pre>
       </div>
     </div>
   );

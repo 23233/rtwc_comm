@@ -21,6 +21,19 @@ export interface Resp<T = any> {
   response: Response;
 }
 
+export enum RestParamsOptions {
+  'eq' = 'eq', // 等于
+  'gt' = 'gt', // 大于
+  'gte' = 'gte', // 大于等于
+  'lt' = 'lt', // 小于
+  'lte' = 'lte', // 小于等于
+  'ne' = 'ne', // 不等于
+  'in' = 'in', // 包含
+  'nin' = 'nin', // 不包含
+  'exists' = 'exists', // 字段是否存在
+  'null' = 'null', // 内容是否存在
+}
+
 // crud 接口生成器
 class RestApiGen {
   url: string;
@@ -91,6 +104,121 @@ class RestApiGen {
       ...geoParams,
     });
   };
+}
+
+// 请求参数构建
+export class RestParams {
+  u = new URLSearchParams();
+
+  constructor() {}
+
+  Page(n: number) {
+    this.u.set('page', n.toString());
+    return this;
+  }
+
+  PageNext(now: number) {
+    return this.Page(now + 1);
+  }
+
+  PagePre(now: number) {
+    return this.Page(now - 1);
+  }
+
+  PageSize(n: number) {
+    this.u.set('page_size', n.toString());
+    return this;
+  }
+
+  SortAsc(field: string) {
+    this.u.set('_o', field);
+    return this;
+  }
+
+  SortDesc(field: string) {
+    this.u.set('_od', field);
+    return this;
+  }
+
+  Or(field: string, value: any) {
+    this.u.set('_o_' + field, value);
+    return this;
+  }
+
+  And(field: string, value: any) {
+    this.u.set(field, value);
+    return this;
+  }
+
+  // maxDistance 单位为米
+  Geo(lng: number, lat: number, maxDistance?: number, minDistance?: number) {
+    this.u.set('_g', `${lng},${lat}`);
+    if (maxDistance != undefined) {
+      this.GeoMaxDistance(maxDistance);
+    }
+    if (minDistance != undefined) {
+      this.GeoMinDistance(minDistance);
+    }
+    return this;
+  }
+
+  // meters 为米
+  GeoMaxDistance(meters: number) {
+    this.u.set('_gmax', meters.toString());
+    return this;
+  }
+
+  // meters 为米
+  GeoMinDistance(meters: number) {
+    this.u.set('_gmin', meters.toString());
+    return this;
+  }
+
+  Search(text: string, match?: 'left' | 'right' | 'full') {
+    let s: string;
+    switch (match) {
+      case 'left':
+        s = `__${text}`;
+        break;
+      case 'right':
+        s = `${text}__`;
+        break;
+      default:
+        s = `__${text}__`;
+        break;
+    }
+    this.u.set('_s', s);
+    return this;
+  }
+
+  LastMid(mid: string) {
+    this.u.set('_last', mid);
+    return this;
+  }
+
+  String() {
+    return this.u.toString();
+  }
+
+  Op(field: string, value: any, op: RestParamsOptions | string) {
+    this.u.set(`${field}_${op}_`, value);
+    return this;
+  }
+
+  OpIn(field: string, values: any[]) {
+    const valueStr = values.join(',');
+    return this.Op(field, valueStr, 'in');
+  }
+
+  OpNotIn(field: string, values: any[]) {
+    const valueStr = values.join(',');
+    return this.Op(field, valueStr, 'nin');
+  }
+
+  JoinParams(url: string) {
+    const fullUrl = url + '?' + this.String();
+    return fullUrl.replace('??', '?');
+  }
 }
 
 export default RestApiGen;

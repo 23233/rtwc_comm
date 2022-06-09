@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Resp, restApiGen } from '@rtwc/comm';
+import { Resp, restApiGen, RestParams } from '@rtwc/comm';
 import { extend } from 'umi-request';
 
 const request = extend({
@@ -21,6 +21,9 @@ const V: React.FC<p> = ({ ...props }) => {
     setResp([g, p, put]);
   };
 
+  const a = new RestParams();
+  a.Page(1).And('and', '中文').Or('or', 'or').SortDesc('_id').OpIn('tags', ['c', 'b']);
+
   return (
     <div>
       <button onClick={run}>发起网络请求</button>
@@ -35,6 +38,12 @@ const V: React.FC<p> = ({ ...props }) => {
             </div>
           );
         })}
+      </div>
+
+      <div>
+        <h2>参数构建: </h2>
+        <pre>{a.String()}</pre>
+        <pre>{a.JoinParams('/sdjfiw/fdifi')}</pre>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 // File image对象转换为htmlTarget
+
 export const imageFileToTarget = async (src: File): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     let rawImage = new Image();
@@ -77,5 +78,3 @@ export const fileSizeParse = (originByte: number | undefined) => {
   }
   return Math.round(kb / 1024).toString() + 'MB';
 };
-
-

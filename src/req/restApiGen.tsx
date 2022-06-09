@@ -215,6 +215,16 @@ export class RestParams {
     return this.Op(field, valueStr, 'nin');
   }
 
+  // 验证字段是否存在
+  OpFieldExists(field: string, has?: boolean) {
+    return this.Op(field, !!has, 'exists');
+  }
+
+  // 验证内容是否存在 true 为不存在 false为存在
+  OpNull(field: string, isNull?: boolean) {
+    return this.Op(field, !!isNull, 'null');
+  }
+
   JoinParams(url: string) {
     const fullUrl = url + '?' + this.String();
     return fullUrl.replace('??', '?');

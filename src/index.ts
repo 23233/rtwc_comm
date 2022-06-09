@@ -3,6 +3,7 @@ export { default as useImageToWebp } from './image/index';
 export { imageToWebp } from './image/conv';
 export type { webpConvResult } from './image/conv';
 export * as imageTools from './image/tools';
+export * as DistanceCalc from './utils/distance';
 
 export {
   default as restApiGen,

@@ -118,7 +118,7 @@ const useRipple = (ref?: RefObject<HTMLElement>, options?: RippleOptions): any =
       element.removeEventListener('mousedown', ripple);
       element.removeEventListener('keydown', keyboardRipple);
     };
-  });
+  }, [options]);
 };
 
 export default useRipple;

@@ -21,11 +21,6 @@ export type { uploadItem, imgFileUploadItem, uploadResult } from './upload/useIm
 export { default as runImgUpload } from './upload/promiseUpload';
 export type { runImgOptions } from './upload/promiseUpload';
 
-export { default as useRipple } from './click/useRipple';
-export type { RippleOptions } from './click/useRipple';
-
-export { default as RippleView } from './click/rippleView';
-
 export { default as useClipboard } from './clipboard/useClipboard';
 export type { useClipParams, ClipboardResult } from './clipboard/useClipboard';
 

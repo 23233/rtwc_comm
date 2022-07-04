@@ -1,5 +1,17 @@
 import { useEffect, useState } from 'react';
 
+// 写入剪切板
+export const sendClipboard = (text: string, cb?: () => void): void => {
+  if (!text) return;
+  const textField = document.createElement('textarea');
+  textField.innerText = text;
+  document.body.appendChild(textField);
+  textField.select();
+  document.execCommand('copy');
+  textField.remove();
+  cb && cb();
+};
+
 export interface useClipParams {
   updateFrequency?: number; // default 1s 1000
   onReadError?: (reason: Error) => any;

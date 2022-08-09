@@ -1,4 +1,5 @@
 export { default as useImageToWebp } from './image/index';
+export { default as useVideoParse } from './video/index';
 
 export { imageToWebp } from './image/conv';
 export type { webpConvResult } from './image/conv';

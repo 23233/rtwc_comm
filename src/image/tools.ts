@@ -1,9 +1,11 @@
-// File image对象转换为htmlTarget
+// @ts-ignore
+import Reduce from 'image-blob-reduce';
 
+// File image对象转换为htmlTarget
 export const imageFileToTarget = async (src: File): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     let rawImage = new Image();
-    rawImage.src = readBlobUrl(src);
+    rawImage.src = fileToBlobUrl(src);
     rawImage.addEventListener('load', function () {
       resolve(rawImage);
     });
@@ -11,7 +13,7 @@ export const imageFileToTarget = async (src: File): Promise<HTMLImageElement> =>
   });
 };
 // 获取blob url
-export const readBlobUrl = (file: File): string => {
+export const fileToBlobUrl = (file: File): string => {
   let url = '';
   if (window?.URL) {
     url = window.URL.createObjectURL(file);
@@ -19,6 +21,7 @@ export const readBlobUrl = (file: File): string => {
     url = window.webkitURL.createObjectURL(file);
   } else {
     console.error('上传获取blob出错');
+    return '';
   }
   return url;
 };
@@ -58,23 +61,126 @@ export const getFileNameSuffix = (filename: string) => {
   return [name.trim(), suffix.trim()];
 };
 
-export const blobToFile = (theBlob: Blob, fileName: string): File => {
-  const [_, suffix] = getFileNameSuffix(fileName);
+export const blobToFile = (theBlob: Blob, fileName: string, mimeType?: string): File => {
+  let mt;
+  if (!mimeType) {
+    const [_, suffix] = getFileNameSuffix(fileName);
+    mt = 'image/' + suffix;
+  } else {
+    mt = mimeType;
+  }
 
   return new File([theBlob], fileName, {
     lastModified: new Date().getTime(),
-    type: 'image/' + suffix,
+    type: mt,
+  });
+};
+
+export interface imgFileGetBlobResp {
+  target: HTMLImageElement;
+  blob: Blob | null;
+  mimeType: string;
+}
+
+export const imgFileGetBlob = async (f: File): Promise<imgFileGetBlobResp> => {
+  const target = await imageFileToTarget(f);
+  const blob = await imgTargetToBlob(target);
+  return {
+    target,
+    blob,
+    mimeType: 'image/webp',
+  };
+};
+
+export const imageResize = async (f: File, nameSuffix: '', max: number) => {
+  const m = await imgFileGetBlob(f);
+  if (!m.blob) {
+    return;
+  }
+
+  const [name, suffix] = getFileNameSuffix(f.name);
+  const newFileName = `${name}${nameSuffix}.${suffix}`;
+  return blobResize(m.blob, newFileName, max);
+};
+
+export const blobResize = async (b: Blob, name: string, max: number) => {
+  const reduce = Reduce();
+  const blob = await reduce.toBlob(b, { max: max });
+  return blobToFile(blob, name);
+};
+
+// 获取视频第一帧图片的base64
+export const getVideoFirstFrame = (url: string): Promise<HTMLCanvasElement> => {
+  return new Promise(function (resolve, reject) {
+    let video = document.createElement('video');
+    let canvas = document.createElement('canvas');
+
+    video.setAttribute('crossOrigin', 'anonymous'); //处理跨域
+    video.setAttribute('src', url);
+    video.currentTime = 1;
+    video.load();
+    video.addEventListener('loadedmetadata', function () {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    });
+    video.addEventListener('loadeddata', function () {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight); //绘制canvas
+        resolve(canvas);
+      }
+    });
+    video.addEventListener('error', function () {
+      reject('load video fail');
+    });
+  });
+};
+
+export interface videoFileGetPreviewResp {
+  imgFile: File;
+  imgBlob: Blob; // 预览图片的blob
+  video: File;
+}
+
+// 视频file获取第一帧
+export const videoFileGetPreviewImg = (f: File): Promise<videoFileGetPreviewResp | undefined> => {
+  return new Promise(async (resolve, reject) => {
+    const r = fileToBlobUrl(f);
+    if (r) {
+      const [name, suffix] = getFileNameSuffix(f.name);
+      const imgName = `${name}.webp`;
+
+      const canvas = await getVideoFirstFrame(r);
+      const quality = 0.8;
+      // const b64 = canvas.toDataURL('image/webp', quality)
+      const webpMime = 'image/webp';
+      canvas.toBlob(
+        async (blob) => {
+          if (blob) {
+            const file = await blobToFile(blob, imgName, webpMime);
+            resolve({
+              imgFile: file,
+              video: f,
+              imgBlob: blob,
+            });
+          }
+        },
+        webpMime,
+        quality,
+      );
+    }
   });
 };
 
 // 文件大小转换
-export const fileSizeParse = (originByte: number | undefined) => {
+export const fileSizeParse = (originByte: number | undefined, empty = '0KB') => {
   if (!originByte) {
-    return '0KB';
+    return empty;
   }
   const kb = originByte / 1024;
   if (kb < 1024) {
     return Math.round(kb).toString() + 'KB';
   }
-  return Math.round(kb / 1024).toString() + 'MB';
+  const mb = kb / 1024;
+  return Math.round(mb).toString() + 'MB';
 };

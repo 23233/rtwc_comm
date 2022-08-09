@@ -23,11 +23,15 @@ export default () => {
               <p>原图</p>
             </div>
             <div>
-              <img src={imageTools.readBlobUrl(result?.webp!)} alt={'webp'} height={150} />
+              <img src={imageTools.fileToBlobUrl(result?.webp!)} alt={'webp'} height={150} />
               <p>webp</p>
             </div>
             <div>
-              <img src={imageTools.readBlobUrl(result?.previewWebp!)} alt={'预览图'} height={150} />
+              <img
+                src={imageTools.fileToBlobUrl(result?.previewWebp!)}
+                alt={'预览图'}
+                height={150}
+              />
               <p>预览图</p>
             </div>
           </div>

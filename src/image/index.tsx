@@ -9,6 +9,7 @@ interface resp {
 interface options {
   max?: number; // 允许的预览图最大宽或者高
   previewSuffix?: string; // 预览图文件名额外后缀
+  originMaxWidth?: number; // 原图最大宽度
   onSuccess?: (result: webpConvResult) => void;
 }
 
@@ -17,6 +18,7 @@ const useImageToWebp = (f?: File, params?: options): resp => {
   const defaultOp = {
     max: 375,
     previewSuffix: '_tm_',
+    originMaxWidth: 0,
   } as options;
   const p = { ...defaultOp, ...params };
   const [file, setFile] = useState<File>();
@@ -28,7 +30,7 @@ const useImageToWebp = (f?: File, params?: options): resp => {
 
   useEffect(() => {
     if (file) {
-      imageToWebp(file, p.max).then((r) => {
+      imageToWebp(file, p.max, p.previewSuffix, p.originMaxWidth).then((r) => {
         setResult(r);
       });
     }

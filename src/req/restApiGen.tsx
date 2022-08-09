@@ -104,6 +104,16 @@ class RestApiGen {
       ...geoParams,
     });
   };
+
+  // 主要用于像`swr`这种依赖相同key缓存的请求库
+  GetKey = (params?: Record<string, any>): string => {
+    const p = new URLSearchParams(params);
+    return `${this.url}${params ? '?' + p.toString() : ''}`;
+  };
+
+  GetSingleKey = (mid: string): string => {
+    return `${this.url}/${mid}`;
+  };
 }
 
 // 请求参数构建

@@ -1,7 +1,8 @@
 ---
-title: 通用图片上传处理
+title: 图片上传
 group:
-  path: /image
+  title: 文件上传
+  path: /upload
 
 nav:
   path: /components
@@ -9,4 +10,4 @@ nav:
 
 <code src="./demo.tsx"></code>
 
-<API src="./useImageUploads.ts"></API>
+<API src="./useFileUploads.ts"></API>

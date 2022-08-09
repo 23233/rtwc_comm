@@ -1,8 +1,8 @@
 ---
-title: 上传图像转换为webp
+title: 图片转换为webp
 group:
-  path: /image
-  title: 图像处理
+  path: /upload
+  title: 文件上传
 
 nav:
   title: 组件库

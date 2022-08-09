@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { UploadFileItemParams } from 'cos-js-sdk-v5';
 import CosSdk from './cos_sdk';
-import runImgUpload from './promiseUpload';
+import { runCosUpload } from '@rtwc/comm';
 
 export interface uploadItem {
   origin: string;
@@ -29,7 +28,7 @@ export interface imgFileUploadItem {
 }
 
 // 通用图片上传
-const useImageUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options): uploadResult => {
+const useFileUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options): uploadResult => {
   const [msg, setMsg] = useState<string>(''); // 状态说明
   const [process, setProcess] = useState<number>(0); // 上传的进度
   const [status, setStatus] = useState<number>(0); // 0待上传 1上传中 2成功 3错误
@@ -40,7 +39,7 @@ const useImageUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options
   const runUpload = async (sf?: imgFileUploadItem) => {
     const f = sf || file;
     if (f) {
-      await runImgUpload({
+      await runCosUpload({
         cos: cos,
         file: f,
         onUploadStart: () => {
@@ -91,4 +90,4 @@ const useImageUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options
   };
 };
 
-export default useImageUploads;
+export default useFileUploads;

@@ -1,5 +1,5 @@
 export { default as useImageToWebp } from './image/index';
-export { default as useVideoParse } from './video/index';
+export { default as useVideoParse } from './upload/video';
 
 export { imageToWebp } from './image/conv';
 export type { webpConvResult } from './image/conv';
@@ -18,10 +18,10 @@ export type { Resp } from './req/restApiGen';
 
 export { default as CosSdk } from './upload/cos_sdk';
 
-export { default as useImageUploads } from './upload/useImageUploads';
-export type { uploadItem, imgFileUploadItem, uploadResult } from './upload/useImageUploads';
+export { default as useFileUploads } from './upload/useFileUploads';
+export type { uploadItem, imgFileUploadItem, uploadResult } from './upload/useFileUploads';
 
-export { default as runImgUpload } from './upload/promiseUpload';
+export { default as runCosUpload } from './upload/promiseUpload';
 export type { runImgOptions } from './upload/promiseUpload';
 
 export { default as useClipboard, sendClipboard } from './clipboard/useClipboard';

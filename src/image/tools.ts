@@ -172,6 +172,23 @@ export const videoFileGetPreviewImg = (f: File): Promise<videoFileGetPreviewResp
   });
 };
 
+export interface videoFileParseResp extends videoFileGetPreviewResp {
+  imgTarget: HTMLImageElement;
+  playSrc: string;
+}
+
+export const videoFileParse = async (v: File): Promise<videoFileParseResp | undefined> => {
+  const m = await videoFileGetPreviewImg(v);
+  if (m) {
+    const pm = await imgFileGetBlob(m?.imgFile);
+    return {
+      ...m,
+      imgTarget: pm.target,
+      playSrc: fileToBlobUrl(m.video),
+    };
+  }
+};
+
 // 文件大小转换
 export const fileSizeParse = (originByte: number | undefined, empty = '0KB') => {
   if (!originByte) {

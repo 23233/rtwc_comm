@@ -11,14 +11,9 @@ const useVideoParse = (f?: File, cb?: (r: result) => void) => {
   const [result, setResult] = useState<result>();
 
   const runProcess = async (f: File) => {
-    const m = await imageTools.videoFileGetPreviewImg(f);
-    if (m) {
-      const pm = await imageTools.imgFileGetBlob(m?.imgFile);
-      setResult({
-        ...m,
-        imgTarget: pm.target,
-        playSrc: imageTools.fileToBlobUrl(m.video),
-      });
+    const r = await imageTools.videoFileParse(f);
+    if (r) {
+      setResult(r);
     }
   };
 

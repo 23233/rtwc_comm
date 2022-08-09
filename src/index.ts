@@ -22,7 +22,7 @@ export { default as useFileUploads } from './upload/useFileUploads';
 export type { uploadItem, imgFileUploadItem, uploadResult } from './upload/useFileUploads';
 
 export { default as runCosUpload } from './upload/promiseUpload';
-export type { runImgOptions } from './upload/promiseUpload';
+export type { runCosUploadOptions } from './upload/promiseUpload';
 
 export { default as useClipboard, sendClipboard } from './clipboard/useClipboard';
 export type { useClipParams, ClipboardResult } from './clipboard/useClipboard';

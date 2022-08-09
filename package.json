@@ -1,6 +1,6 @@
 {
   "name": "@rtwc/comm",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "无ui代码式通用组件库",
   "homepage": "https://23233.github.io/rtwc_comm",
   "scripts": {

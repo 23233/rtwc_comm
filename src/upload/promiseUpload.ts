@@ -43,6 +43,7 @@ const runCosUpload = async (options: runCosUploadOptions) => {
   if (file?.preview) {
     files.push(genUploadParams(file.preview));
   }
+  console.log('文件准备上传', files);
 
   options?.onUploadStart && options?.onUploadStart();
   const r = await options.cos.uploadFiles({

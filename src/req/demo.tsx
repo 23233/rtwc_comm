@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RecordJson, Resp, restApiGen, RestParams, WeAppResp, WebResp } from '@rtwc/comm';
+import { RecordJson, restApiGen, RestParams, WeAppResp, WebResp } from '@rtwc/comm';
 import { extend } from 'umi-request';
 
 const request = extend({
@@ -11,15 +11,21 @@ interface p {
 }
 
 const V: React.FC<p> = ({ ...props }) => {
-  const r = new restApiGen<WeAppResp>('/api/v1', request);
-  const [resp, setResp] = useState<Array<Resp>>([]);
+  const r = new restApiGen<WebResp>('/api/v1', request);
+  const [resp, setResp] = useState<Array<WebResp>>([]);
 
   const run = async () => {
     const d = await r.get();
+    console.log('默认跟随前置类型', d?.response);
     const g = await r.get<WebResp<RecordJson>>();
     const p = await r.post<WebResp<RecordJson>>({});
+    console.log('p', p?.response?.status);
+    const weapp = await r.post<WeAppResp<RecordJson>>({});
+    console.log('weappresp', weapp?.statusCode);
     const put = await r.put<WeAppResp<RecordJson>>('123312123', { asd: 'asd' });
-    setResp([g, p, put, d]);
+    console.log('weappresp', put?.statusCode);
+
+    setResp([g, p, d]);
   };
 
   const a = new RestParams();
@@ -34,7 +40,7 @@ const V: React.FC<p> = ({ ...props }) => {
           return (
             <div key={i}>
               <div>
-                {d.response?.status} {d.response?.url}
+                {d?.response?.status} {d?.response?.url}
               </div>
             </div>
           );

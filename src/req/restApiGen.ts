@@ -31,7 +31,8 @@ export interface WeAppResp<DT = any> {
   cookies?: string[];
 }
 
-export type Resp<T = any> = WebResp<T> | WeAppResp<T> | Array<T> | T;
+// 切记这里一定不能单独增加 T 或者 any 等选择 必须为指定类型
+export type Resp<T = any> = WebResp<T> | WeAppResp<T> | Array<T> | RecordJson;
 
 export enum RestParamsOptions {
   'eq' = 'eq', // 等于
@@ -54,7 +55,7 @@ export type RecordJson<T = any> = {
  * BT 代表resp类型 默认为WebResp
  * 也可以在每个请求前定义准确类型 eg: r.get<WebResp<RecordJson>>()
  */
-class RestApiGen<BT = WebResp> {
+class RestApiGen<BT extends Resp = WebResp> {
   url: string;
   Req: any;
 

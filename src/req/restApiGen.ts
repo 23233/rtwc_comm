@@ -3,7 +3,7 @@ export const genGeoGetParams = (
   lat: number,
   minDistance: number,
   maxDistance: number,
-): Record<string, undefined> => {
+): RecordJson => {
   const p = {
     _g: `${lng},${lat}`,
   } as any;
@@ -16,10 +16,22 @@ export const genGeoGetParams = (
   return p;
 };
 
-export interface Resp<T = any> {
-  data: T;
+export interface WebResp<DT = any> {
+  data: DT;
   response: Response;
 }
+
+export interface WeAppResp<DT = any> {
+  data: DT;
+  // 响应码
+  statusCode: number;
+  // 调用结果
+  errMsg?: string;
+  header?: RecordJson;
+  cookies?: string[];
+}
+
+export type Resp<T = any> = WebResp<T> | WeAppResp<T> | Array<T> | T;
 
 export enum RestParamsOptions {
   'eq' = 'eq', // 等于
@@ -34,8 +46,15 @@ export enum RestParamsOptions {
   'null' = 'null', // 内容是否存在
 }
 
-// crud 接口生成器
-class RestApiGen {
+export type RecordJson<T = any> = {
+  [k: string]: T;
+};
+
+/* crud 接口生成器
+ * BT 代表resp类型 默认为WebResp
+ * 也可以在每个请求前定义准确类型 eg: r.get<WebResp<RecordJson>>()
+ */
+class RestApiGen<BT = WebResp> {
   url: string;
   Req: any;
 
@@ -48,34 +67,38 @@ class RestApiGen {
     this.Req = Req;
   }
 
-  get = (params?: Record<string, unknown>): Promise<Resp> => {
+  get = <T extends Resp = BT>(params?: RecordJson): Promise<T> => {
     return this.Req.get(this.url, {
       params,
     });
   };
 
-  post = (data: any): Promise<Resp> => {
+  post = <T extends Resp = BT, D = any>(data: D): Promise<T> => {
     return this.Req.post(this.url, {
       data,
     });
   };
 
-  put = (mid: string, data: any): Promise<Resp> => {
+  put = <T extends Resp = BT, D = any>(mid: string, data: D): Promise<T> => {
     return this.Req.put(`${this.url}/${mid}`, {
       data,
     });
   };
 
-  delete = (mid: string): Promise<Resp> => {
+  delete = <T extends Resp = BT>(mid: string): Promise<T> => {
     return this.Req.delete(`${this.url}/${mid}`);
   };
 
-  getSingle = (mid: string): Promise<Resp> => {
+  getSingle = <T extends Resp = BT>(mid: string): Promise<T> => {
     return this.Req.get(`${this.url}/${mid}`);
   };
 
   // 前缀匹配% 后缀匹配 前后匹配
-  search = (val: string, match: 'left' | 'right' | 'full', params?: Record<string, unknown>) => {
+  search = <T extends Resp = BT>(
+    val: string,
+    match: 'left' | 'right' | 'full',
+    params?: RecordJson,
+  ): Promise<T> => {
     let s: string;
     if (match === 'left') {
       s = `__${val}`;
@@ -91,13 +114,13 @@ class RestApiGen {
   };
 
   // geo搜索
-  geoGet = (
+  geoGet = <T extends Resp = BT>(
     lng: number,
     lat: number,
     minDistance: number,
     maxDistance: number,
-    other?: Record<string, unknown>,
-  ) => {
+    other?: RecordJson,
+  ): Promise<T> => {
     const geoParams = genGeoGetParams(lng, lat, minDistance, maxDistance);
     return this.get({
       ...other,
@@ -106,7 +129,7 @@ class RestApiGen {
   };
 
   // 主要用于像`swr`这种依赖相同key缓存的请求库
-  GetKey = (params?: Record<string, any>): string => {
+  GetKey = (params?: RecordJson): string => {
     const p = new URLSearchParams(params);
     return `${this.url}${params ? '?' + p.toString() : ''}`;
   };
@@ -211,7 +234,7 @@ export class RestParams {
   }
 
   ToObj() {
-    return Object.fromEntries(this.u) as Record<string, any>;
+    return Object.fromEntries(this.u) as RecordJson;
   }
 
   Op(field: string, value: any, op: RestParamsOptions | string) {

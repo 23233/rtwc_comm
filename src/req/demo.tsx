@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Resp, restApiGen, RestParams } from '@rtwc/comm';
+import { RecordJson, Resp, restApiGen, RestParams, WeAppResp, WebResp } from '@rtwc/comm';
 import { extend } from 'umi-request';
 
 const request = extend({
@@ -11,14 +11,15 @@ interface p {
 }
 
 const V: React.FC<p> = ({ ...props }) => {
-  const r = new restApiGen('/api/v1', request);
+  const r = new restApiGen<WeAppResp>('/api/v1', request);
   const [resp, setResp] = useState<Array<Resp>>([]);
 
   const run = async () => {
-    const g = await r.get();
-    const p = await r.post({});
-    const put = await r.put('123312123', 'asd');
-    setResp([g, p, put]);
+    const d = await r.get();
+    const g = await r.get<WebResp<RecordJson>>();
+    const p = await r.post<WebResp<RecordJson>>({});
+    const put = await r.put<WeAppResp<RecordJson>>('123312123', { asd: 'asd' });
+    setResp([g, p, put, d]);
   };
 
   const a = new RestParams();

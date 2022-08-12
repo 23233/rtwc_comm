@@ -8,13 +8,8 @@ export * as imageTools from './image/tools';
 // 距离相关
 export { getDistanceOfMetre, getDistance, parseToKm } from './utils/distance';
 
-export {
-  default as restApiGen,
-  genGeoGetParams,
-  RestParamsOptions,
-  RestParams,
-} from './req/restApiGen';
-export type { Resp } from './req/restApiGen';
+export { default as restApiGen, genGeoGetParams, RestParams } from './req/restApiGen';
+export type { Resp, RestParamsOptions, WebResp, WeAppResp, RecordJson } from './req/restApiGen';
 
 export { default as CosSdk } from './upload/cos_sdk';
 

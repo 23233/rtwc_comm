@@ -1,26 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
-import { imageToWebp, webpConvResult } from './conv';
+import {
+  defaultImageToWebpOptions,
+  imageToWebp,
+  imageToWebpOp,
+  imageToWebpOptions,
+  webpConvResult,
+} from './conv';
 
 interface resp {
   setFile: (f: File) => void;
   result?: webpConvResult;
 }
 
-interface options {
-  max?: number; // 允许的预览图最大宽或者高
-  previewSuffix?: string; // 预览图文件名额外后缀
-  originMaxWidth?: number; // 原图最大宽度
+interface options extends imageToWebpOptions {
   onSuccess?: (result: webpConvResult) => void;
 }
 
 // 把上传的图片File转换为webp并且生成缩略图
 const useImageToWebp = (f?: File, params?: options): resp => {
-  const defaultOp = {
-    max: 375,
-    previewSuffix: '_tm_',
-    originMaxWidth: 0,
-  } as options;
-  const p = { ...defaultOp, ...params };
+  const p = { ...defaultImageToWebpOptions, ...params };
   const [file, setFile] = useState<File>();
   const [result, setResult] = useState<webpConvResult>();
 
@@ -30,7 +28,7 @@ const useImageToWebp = (f?: File, params?: options): resp => {
 
   useEffect(() => {
     if (file) {
-      imageToWebp(file, p.max, p.previewSuffix, p.originMaxWidth).then((r) => {
+      imageToWebpOp(file, { ...p }).then((r) => {
         setResult(r);
       });
     }

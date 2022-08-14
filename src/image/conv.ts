@@ -15,8 +15,11 @@ export interface webpConvResult {
 }
 
 export interface imageToWebpOptions {
+  /* 预览图最大限制宽高 默认375 */
   previewMax?: number;
+  /* 预览图文件附加后缀 默认 _tm_ */
   previewSuffix?: string;
+  /* 默认为0 即不压缩 存在 则会压缩原图宽高为设置值 取宽或高最大值 */
   originMaxWidth?: number;
 }
 

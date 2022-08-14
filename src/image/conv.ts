@@ -2,9 +2,13 @@
 import { blobResize, blobToFile, getFileNameSuffix, imgFileGetBlob } from './tools';
 
 export interface webpConvResult {
+  /* 原始上传的文件 */
   originFile: File;
+  /* 原始文件target 可以获取宽高*/
   originTarget: HTMLImageElement;
+  /* 原始文件转换为webp后的文件  */
   webp: File;
+  /* 原始文件生成的预览图webp文件  */
   previewWebp: File;
 }
 
@@ -41,6 +45,7 @@ export const imageToWebp = async (
   const originName = `${name}.webp`;
   const previewName = `${name}${previewSuffix}.webp`;
   let origin = await imgFileGetBlob(file);
+  const ot = { ...origin };
   if (originMaxWidth) {
     if (origin.target.width > originMaxWidth || origin.target.height > originMaxWidth) {
       const originFile = await blobResize(origin.blob!, originName, originMaxWidth);
@@ -50,7 +55,7 @@ export const imageToWebp = async (
   const originWebpFile = blobToFile(origin.blob!, originName, origin.mimeType);
   const thumbnail_file = await blobResize(origin.blob!, previewName, previewMax!);
   return {
-    originTarget: origin.target,
+    originTarget: ot.target,
     originFile: file,
     webp: originWebpFile,
     previewWebp: thumbnail_file,

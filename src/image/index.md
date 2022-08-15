@@ -10,3 +10,7 @@ nav:
 ---
 
 <code src="./demo.tsx"></code>
+
+## 新版本图片方法 使用 web worker 优先
+
+<code src="./demo2.tsx"></code>

@@ -1,5 +1,6 @@
 // 图片转webp
 import { blobResize, blobToFile, getFileNameSuffix, imgFileGetBlob } from './tools';
+import { TimeCalc } from '../utils/funcTime';
 
 export interface webpConvResult {
   /* 原始上传的文件 */
@@ -46,21 +47,31 @@ export const imageToWebp = async (
   previewSuffix = defaultImageToWebpOptions.previewSuffix,
   originMaxWidth = defaultImageToWebpOptions.originMaxWidth,
 ): Promise<webpConvResult> => {
+  const calc = new TimeCalc('图片生成计时');
   const [name, _] = getFileNameSuffix(file.name);
   const originName = `${name}.webp`;
   const previewName = `${name}${previewSuffix}.webp`;
+  calc.addStep('前置处理结束');
   let origin = await imgFileGetBlob(file);
+  calc.addStep('原图处理结束');
   const ot = { ...origin };
   let runCompress = false;
   if (originMaxWidth) {
     if (origin.target.width > originMaxWidth || origin.target.height > originMaxWidth) {
+      calc.addStep('原图压缩开始');
       const originFile = await blobResize(origin.blob!, originName, originMaxWidth);
+      calc.addStep('原图压缩结束');
       origin = await imgFileGetBlob(originFile);
+      calc.addStep('原图压缩后成File结束');
       runCompress = true;
     }
   }
+
   const originWebpFile = blobToFile(origin.blob!, originName, origin.mimeType);
+  calc.addStep('原始生成Blob结束');
   const thumbnail_file = await blobResize(origin.blob!, previewName, previewMax!);
+  calc.addStep('预览图生成Blob结束');
+  // calc.log()
   return {
     originTarget: ot.target,
     compressTarget: runCompress ? origin.target : undefined,

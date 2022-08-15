@@ -1,9 +1,26 @@
-export { default as useImageToWebp } from './image/index';
+export { default as useImageToWebp } from './image/useImageToWebp';
 export { default as useVideoParse } from './upload/video';
 
 export { imageToWebp } from './image/conv';
 export type { webpConvResult } from './image/conv';
 export * as imageTools from './image/tools';
+
+// 图片压缩转换相关
+export {
+  fastImageGenThumbnail,
+  fastFileGetSrc,
+  fastFileGetTargetBuffer,
+  fastImageFileCompression,
+  DefaultImgFileConvOptions,
+  fastLoadImageBuffer,
+} from './image/compression';
+export type {
+  imgFileConvOptions,
+  imgFileConvResult,
+  compressionOptions,
+} from './image/compression';
+
+export { default as useImageFileThumbnailGenerate } from './image/useImageThumbnail';
 
 // 距离相关
 export { getDistanceOfMetre, getDistance, parseToKm } from './utils/distance';
@@ -24,3 +41,5 @@ export type { useClipParams, ClipboardResult } from './clipboard/useClipboard';
 
 export { default as useMaskNotMove } from './dom/modal/useMaskNotMove';
 export type { maskNoMoveResult } from './dom/modal/useMaskNotMove';
+
+export { TimeCalc } from './utils/funcTime';

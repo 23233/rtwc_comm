@@ -17,9 +17,9 @@ export default () => {
       <input type="file" multiple={false} onChange={onUpload} accept={'image/*'} />
       <div style={{ marginTop: 10 }}>
         {!!result && (
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             <div>
-              <img src={result?.originTarget.src} alt={'原图'} height={150} />
+              <img src={URL.createObjectURL(result.originFile)} alt={'原图'} height={150} />
               <p>原图</p>
             </div>
             <div>

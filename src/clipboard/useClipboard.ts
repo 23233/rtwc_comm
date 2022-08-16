@@ -27,7 +27,7 @@ export interface ClipboardResult {
   ) => void;
 }
 
-const useClipboard = (props?: useClipParams): ClipboardResult => {
+export const useClipboard = (props?: useClipParams): ClipboardResult => {
   const [clipboard, setClipboardContent] = useState<string>('');
 
   const copyToClipboard = (
@@ -96,5 +96,3 @@ const useClipboard = (props?: useClipParams): ClipboardResult => {
     copyToClipboard,
   };
 };
-
-export default useClipboard;

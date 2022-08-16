@@ -1,5 +1,5 @@
 import React from 'react';
-import { useImageToWebp, imageTools } from '@rtwc/comm';
+import { fastFileGetSrc, fileSizeParse, useImageToWebp } from '@rtwc/comm';
 
 export default () => {
   const { setFile, result } = useImageToWebp();
@@ -13,7 +13,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <p>文件上传转换为webp并且生成缩略图</p>
+      <p>文件上传转换为webp并且生成缩略图 旧方法 请不要继续使用了</p>
       <input type="file" multiple={false} onChange={onUpload} accept={'image/*'} />
       <div style={{ marginTop: 10 }}>
         {!!result && (
@@ -23,15 +23,11 @@ export default () => {
               <p>原图</p>
             </div>
             <div>
-              <img src={imageTools.fileToBlobUrl(result?.webp!)} alt={'webp'} height={150} />
+              <img src={fastFileGetSrc(result?.webp!)} alt={'webp'} height={150} />
               <p>webp</p>
             </div>
             <div>
-              <img
-                src={imageTools.fileToBlobUrl(result?.previewWebp!)}
-                alt={'预览图'}
-                height={150}
-              />
+              <img src={fastFileGetSrc(result?.previewWebp!)} alt={'预览图'} height={150} />
               <p>预览图</p>
             </div>
           </div>
@@ -40,14 +36,14 @@ export default () => {
       <div>
         <p>
           原图文件名:{result?.originFile?.name} 大小:
-          {imageTools.fileSizeParse(result?.originFile?.size)}
+          {fileSizeParse(result?.originFile?.size)}
         </p>
         <p>
-          转换后的文件名:{result?.webp?.name} 大小:{imageTools.fileSizeParse(result?.webp?.size)}
+          转换后的文件名:{result?.webp?.name} 大小:{fileSizeParse(result?.webp?.size)}
         </p>
         <p>
           预览图文件名:{result?.previewWebp?.name} 大小:
-          {imageTools.fileSizeParse(result?.previewWebp?.size)}
+          {fileSizeParse(result?.previewWebp?.size)}
         </p>
       </div>
     </React.Fragment>

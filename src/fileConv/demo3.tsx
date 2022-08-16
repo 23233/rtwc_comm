@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  useImageToWebp,
-  imageTools,
-  fastFileGetTargetBuffer,
   fastImageGenThumbnail,
   imgFileConvResult,
   fastFileGetSrc,
+  fileSizeParse,
 } from '@rtwc/comm';
 
 interface manyResultItem extends imgFileConvResult {
@@ -56,17 +54,17 @@ export default () => {
                 <React.Fragment>
                   <p>
                     原图文件名:{d?.inputFile?.name} 大小:
-                    {imageTools.fileSizeParse(d?.inputFile?.size)}
+                    {fileSizeParse(d?.inputFile?.size)}
                   </p>
                 </React.Fragment>
               )}
               <p>
                 {d?.originChange ? '变更图' : '原图'}文件名:{d?.originFile?.name} 大小:
-                {imageTools.fileSizeParse(d?.originFile?.size)}
+                {fileSizeParse(d?.originFile?.size)}
               </p>
               <p>
                 预览图文件名:{d?.thumbnailFile?.name} 大小:
-                {imageTools.fileSizeParse(d?.thumbnailFile?.size)}
+                {fileSizeParse(d?.thumbnailFile?.size)}
               </p>
               <p>总花费时间 {d?.progressMs} ms</p>
             </div>

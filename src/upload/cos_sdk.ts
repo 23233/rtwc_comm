@@ -1,6 +1,6 @@
 import COS from 'cos-js-sdk-v5';
 
-class CosSdk extends COS {
+export class CosSdk extends COS {
   // 自定义域名
   visitHost: string | undefined;
   bucket: string | undefined;
@@ -13,5 +13,3 @@ class CosSdk extends COS {
     return f.name;
   }
 }
-
-export default CosSdk;

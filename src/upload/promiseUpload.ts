@@ -1,10 +1,9 @@
-import { CosSdk } from '@rtwc/comm';
-import { imgFileUploadItem, uploadItem } from './useFileUploads';
+import { CosSdk, fileUploadItem, uploadItem } from '@rtwc/comm';
 import { UploadFileItemParams } from 'cos-js-sdk-v5';
 
 export interface runCosUploadOptions {
   cos: CosSdk;
-  file: imgFileUploadItem;
+  file: fileUploadItem;
   // 超过此大小则分片上传 默认 3 * 1024 * 1024 即1mb 单位为byte
   sliceSize?: number;
   // 上传成功的回调
@@ -22,7 +21,7 @@ export interface runCosUploadOptions {
 }
 
 // 进行上传
-const runCosUpload = async (options: runCosUploadOptions) => {
+export const runCosUpload = async (options: runCosUploadOptions) => {
   const { cos, file, sliceSize } = options;
   const SliceSize = sliceSize || 3 * 1024 * 1024;
 
@@ -75,5 +74,3 @@ const runCosUpload = async (options: runCosUploadOptions) => {
 
   return result;
 };
-
-export default runCosUpload;

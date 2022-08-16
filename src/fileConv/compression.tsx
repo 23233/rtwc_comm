@@ -1,6 +1,5 @@
 import imageCompression from 'browser-image-compression';
-import { getFileNameSuffix } from './tools';
-import { TimeCalc } from '../utils/funcTime';
+import { getFileNameSuffix, TimeCalc } from '@rtwc/comm';
 
 /* 在支持bitmap的情况下 优先使用bitmap 核心是获取width 和 height */
 export type ImageGetTargetBuffer = HTMLImageElement | ImageBitmap;
@@ -57,7 +56,7 @@ export const fastImageFileCompression = async (
 
 // https://caniuse.com/mdn-api_htmlcanvaselement_toblob_type_parameter_webp
 // 因为safari全系不支持image/webp的转换 所以如果是safari就为png
-const uaIsSafari = () => {
+export const uaIsSafari = () => {
   const uaMatch = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
   if (uaMatch) {
     const maxOs = /Mac OS/.test(navigator.userAgent) || /iPhone OS/.test(navigator.userAgent);
@@ -152,7 +151,7 @@ export const fastImageGenThumbnail = async (
   return result;
 };
 
-// 图片文件快速生成BLOB进行预览
+// 文件快速生成BLOB进行预览src
 export const fastFileGetSrc = (file: File) => {
   const urlInstance = window?.URL || window?.webkitURL;
   return urlInstance.createObjectURL(file);

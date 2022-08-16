@@ -14,3 +14,5 @@ nav:
 ## COS 文件上传
 
 <code src="./demo.tsx"></code>
+
+<API src="./index.ts"></API>

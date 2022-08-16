@@ -25,7 +25,7 @@ interface options extends imgFileConvOptions {
 }
 
 // 自动图片预览图自动生成
-const useImageFileThumbnailGenerate = (
+export const useImageFileThumbnailGenerate = (
   f?: File,
   params?: options,
 ): ImageFileThumbnailGenerateReturn => {
@@ -93,5 +93,3 @@ const useImageFileThumbnailGenerate = (
     progress,
   };
 };
-
-export default useImageFileThumbnailGenerate;

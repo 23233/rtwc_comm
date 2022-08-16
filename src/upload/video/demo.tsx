@@ -1,5 +1,5 @@
 import React from 'react';
-import { CosSdk, imageToWebp, useFileUploads, runCosUpload, imageTools } from '@rtwc/comm';
+import { CosSdk, useFileUploads, runCosUpload, videoFileParse } from '@rtwc/comm';
 
 const sdk = new CosSdk({
   FileParallelLimit: 5,
@@ -34,10 +34,10 @@ export default () => {
     if (files) {
       const file = files[0];
 
-      const r = await imageTools.videoFileParse(file);
+      const r = await videoFileParse(file);
       if (r) {
         addFile({
-          origin: r.video,
+          origin: r.input,
           preview: r.imgFile,
         });
       }
@@ -48,12 +48,12 @@ export default () => {
     const files = event.target.files;
     if (files) {
       const file = files[0];
-      const r = await imageTools.videoFileParse(file);
+      const r = await videoFileParse(file);
       if (r) {
         const up = await runCosUpload({
           cos: sdk,
           file: {
-            origin: r.video,
+            origin: r.input,
             preview: r.imgFile,
           },
           onFail: (err) => {

@@ -1,17 +1,12 @@
 import { useEffect, useState } from 'react';
-import { imageTools } from '@rtwc/comm';
+import { videoFileParse, videoFileParseResp } from '@rtwc/comm';
 
-interface result extends imageTools.videoFileGetPreviewResp {
-  imgTarget: HTMLImageElement;
-  playSrc: string;
-}
-
-const useVideoParse = (f?: File, cb?: (r: result) => void) => {
+export const useGetVideoFirstFrameImg = (f?: File, cb?: (result: videoFileParseResp) => void) => {
   const [file, setFile] = useState<File>();
-  const [result, setResult] = useState<result>();
+  const [result, setResult] = useState<videoFileParseResp>();
 
   const runProcess = async (f: File) => {
-    const r = await imageTools.videoFileParse(f);
+    const r = await videoFileParse(f);
     if (r) {
       setResult(r);
     }
@@ -38,5 +33,3 @@ const useVideoParse = (f?: File, cb?: (r: result) => void) => {
     result,
   };
 };
-
-export default useVideoParse;

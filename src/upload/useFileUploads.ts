@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import CosSdk from './cos_sdk';
-import { runCosUpload } from '@rtwc/comm';
+import { runCosUpload, CosSdk } from '@rtwc/comm';
 
 export interface uploadItem {
   origin: string;
@@ -14,7 +13,7 @@ export interface uploadResult {
   upload: uploadItem;
   runRetry: () => void;
   loading: boolean;
-  addFile: (f: imgFileUploadItem) => void;
+  addFile: (f: fileUploadItem) => void;
 }
 
 interface options {
@@ -22,22 +21,26 @@ interface options {
   onFail?: (err: Error) => void;
 }
 
-export interface imgFileUploadItem {
+export interface fileUploadItem {
   origin: File;
   preview?: File;
 }
 
 // 通用文件上传
-const useFileUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options): uploadResult => {
+export const useFileUploads = (
+  cos: CosSdk,
+  file?: fileUploadItem,
+  option?: options,
+): uploadResult => {
   const [msg, setMsg] = useState<string>(''); // 状态说明
   const [process, setProcess] = useState<number>(0); // 上传的进度
   const [status, setStatus] = useState<number>(0); // 0待上传 1上传中 2成功 3错误
   const [loading, setLoading] = useState<boolean>(false);
   const upload = useRef<uploadItem>({ origin: '' });
-  const now = useRef<imgFileUploadItem>();
+  const now = useRef<fileUploadItem>();
 
   // 进行上传
-  const runUpload = async (sf?: imgFileUploadItem) => {
+  const runUpload = async (sf?: fileUploadItem) => {
     const f = sf || now.current;
     if (f && f?.origin) {
       await runCosUpload({
@@ -77,7 +80,7 @@ const useFileUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options)
     runUpload();
   };
 
-  const addFile = (f: imgFileUploadItem) => {
+  const addFile = (f: fileUploadItem) => {
     runUpload(f);
     now.current = f;
   };
@@ -92,5 +95,3 @@ const useFileUploads = (cos: CosSdk, file?: imgFileUploadItem, option?: options)
     addFile,
   };
 };
-
-export default useFileUploads;

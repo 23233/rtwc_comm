@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   defaultImageToWebpOptions,
-  imageToWebp,
   imageToWebpOp,
   imageToWebpOptions,
   webpConvResult,
-} from './conv';
+} from './webp';
 
 interface resp {
   setFile: (f: File) => void;
@@ -17,7 +16,8 @@ interface options extends imageToWebpOptions {
 }
 
 // 把上传的图片File转换为webp并且生成缩略图
-const useImageToWebp = (f?: File, params?: options): resp => {
+// Deprecated 下个版本将删除 请勿继续使用
+export const useImageToWebp = (f?: File, params?: options): resp => {
   const p = { ...defaultImageToWebpOptions, ...params };
   const [file, setFile] = useState<File>();
   const [result, setResult] = useState<webpConvResult>();
@@ -45,5 +45,3 @@ const useImageToWebp = (f?: File, params?: options): resp => {
     result,
   };
 };
-
-export default useImageToWebp;

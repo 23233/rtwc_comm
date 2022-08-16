@@ -55,7 +55,7 @@ export type RecordJson<T = any> = {
  * BT 代表resp类型 默认为WebResp
  * 也可以在每个请求前定义准确类型 eg: r.get<WebResp<RecordJson>>()
  */
-class RestApiGen<BT extends Resp = WebResp> {
+export class RestApiGen<BT extends Resp = WebResp> {
   url: string;
   Req: any;
 

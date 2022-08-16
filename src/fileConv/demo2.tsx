@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  useImageToWebp,
-  imageTools,
-  fastFileGetSrc,
   fastFileGetTargetBuffer,
+  fileSizeParse,
   ImageGetTargetBuffer,
   useImageFileThumbnailGenerate,
 } from '@rtwc/comm';
@@ -72,17 +70,17 @@ export default () => {
             <React.Fragment>
               <p>
                 原图文件名:{result?.inputFile?.name} 大小:
-                {imageTools.fileSizeParse(result?.inputFile?.size)}
+                {fileSizeParse(result?.inputFile?.size)}
               </p>
             </React.Fragment>
           )}
           <p>
             {result?.originChange ? '变更图' : '原图'}文件名:{result?.originFile?.name} 大小:
-            {imageTools.fileSizeParse(result?.originFile?.size)}
+            {fileSizeParse(result?.originFile?.size)}
           </p>
           <p>
             预览图文件名:{result?.thumbnailFile?.name} 大小:
-            {imageTools.fileSizeParse(result?.thumbnailFile?.size)}
+            {fileSizeParse(result?.thumbnailFile?.size)}
           </p>
         </div>
       </div>

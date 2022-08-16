@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useVideoParse } from '@rtwc/comm';
+import { fastFileGetSrc, useGetVideoFirstFrameImg } from '@rtwc/comm';
 
 export default () => {
-  const { setFile, result } = useVideoParse();
+  const { setFile, result } = useGetVideoFirstFrameImg();
 
   const onUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -21,11 +21,11 @@ export default () => {
           <div>
             <div>
               <p>预览图</p>
-              <img src={result?.imgTarget?.src} alt={'预览图'} height={150} />
+              <img src={fastFileGetSrc(result.imgFile)} alt={'预览图'} height={150} />
             </div>
             <div>
               <p>视频</p>
-              <video src={result?.playSrc} autoPlay={false} height={150} controls />
+              <video src={result?.src} autoPlay={false} height={150} controls />
             </div>
           </div>
         )}

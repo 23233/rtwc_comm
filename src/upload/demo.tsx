@@ -1,5 +1,5 @@
 import React from 'react';
-import { CosSdk, imageToWebp, useFileUploads, runCosUpload } from '@rtwc/comm';
+import { CosSdk, useFileUploads, runCosUpload, fastImageGenThumbnail } from '@rtwc/comm';
 
 const sdk = new CosSdk({
   FileParallelLimit: 5,
@@ -32,10 +32,10 @@ export default () => {
   const onUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      const resp = await imageToWebp(files[0]);
+      const resp = await fastImageGenThumbnail(files[0]);
       addFile({
-        origin: resp.webp,
-        preview: resp.previewWebp,
+        origin: resp.originFile,
+        preview: resp.thumbnailFile,
       });
     }
   };
@@ -43,12 +43,12 @@ export default () => {
   const onPromiseUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      const resp = await imageToWebp(files[0]);
+      const resp = await fastImageGenThumbnail(files[0]);
       const r = await runCosUpload({
         cos: sdk,
         file: {
-          origin: resp.webp,
-          preview: resp.previewWebp,
+          origin: resp.originFile,
+          preview: resp.thumbnailFile,
         },
         onFail: (err) => {
           console.log('上传出现错误', err);

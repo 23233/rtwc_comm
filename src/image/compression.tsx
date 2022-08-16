@@ -164,3 +164,25 @@ export const fastFileGetTargetBuffer = async (file: File) => {
   const imageBuffer = await fastLoadImageBuffer(arrayBuffer, file.type);
   return imageBuffer;
 };
+
+// 一般用于 base64 生成File文件
+export const fastDataUrlToFile = async (
+  dataUrl: string,
+  fileName: string,
+  fileType?: string,
+): Promise<File> => {
+  let ft = fileType;
+  if (!ft) {
+    const [_, suffix] = getFileNameSuffix(fileName);
+    if (['jpg', 'jpeg', 'png', 'webp', 'bmp', 'gif'].includes(suffix)) {
+      ft = 'image/' + suffix;
+    } else if (['mp4', 'mov', 'avi', 'flv', 'rmvb', 'webm'].includes(suffix)) {
+      ft = 'video/' + suffix;
+    } else {
+      console.error('data url to file prediction file type fail', fileName);
+    }
+  }
+  const res: Response = await fetch(dataUrl);
+  const blob: Blob = await res.blob();
+  return new File([blob], fileName, { type: ft });
+};

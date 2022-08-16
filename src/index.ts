@@ -9,6 +9,7 @@ export * as imageTools from './image/tools';
 export {
   fastImageGenThumbnail,
   fastFileGetSrc,
+  fastDataUrlToFile,
   fastFileGetTargetBuffer,
   fastImageFileCompression,
   DefaultImgFileConvOptions,

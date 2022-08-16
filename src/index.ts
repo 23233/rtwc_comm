@@ -18,9 +18,11 @@ export type {
   imgFileConvOptions,
   imgFileConvResult,
   compressionOptions,
+  ImageGetTargetBuffer,
 } from './image/compression';
 
 export { default as useImageFileThumbnailGenerate } from './image/useImageThumbnail';
+export type { ImageFileThumbnailGenerateReturn } from './image/useImageThumbnail';
 
 // 距离相关
 export { getDistanceOfMetre, getDistance, parseToKm } from './utils/distance';

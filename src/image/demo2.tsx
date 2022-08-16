@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
-import { useImageToWebp, imageTools, fastFileGetSrc, fastFileGetTargetBuffer } from '@rtwc/comm';
-import useImageFileThumbnailGenerate from './useImageThumbnail';
+import React, { useEffect, useState } from 'react';
+import {
+  useImageToWebp,
+  imageTools,
+  fastFileGetSrc,
+  fastFileGetTargetBuffer,
+  ImageGetTargetBuffer,
+  useImageFileThumbnailGenerate,
+} from '@rtwc/comm';
 
 export default () => {
-  const [fileInfo, setFileInfo] = useState<any>();
-  const { setFile, result, src, originSrc, thumbnailSrc } = useImageFileThumbnailGenerate();
+  const [fileInfo, setFileInfo] = useState<ImageGetTargetBuffer>();
+  const { setFile, result, src, originSrc, thumbnailSrc, progress } =
+    useImageFileThumbnailGenerate();
 
   const onUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const f = files[0];
-      // 可以这样获取文件的宽高信息
-      const target = await fastFileGetTargetBuffer(f);
-      setFileInfo(target);
-      setFile(f);
+      if (f) {
+        // 可以这样获取文件的宽高信息
+        const target = await fastFileGetTargetBuffer(f);
+        setFileInfo(target);
+        setFile(f);
+      }
     }
   };
+
+  useEffect(() => {
+    if (progress) {
+      console.log('处理进度', progress);
+    }
+  }, [progress]);
 
   return (
     <React.Fragment>
@@ -28,6 +43,7 @@ export default () => {
               宽 {fileInfo.width}x{fileInfo.height} 高
             </div>
           )}
+          上传进度 {progress}
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>

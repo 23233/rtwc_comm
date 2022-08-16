@@ -7,7 +7,7 @@ export class TimeCalc {
     name: string;
     t: number;
   }> = [];
-  lock = false;
+  allRuntime = 0;
 
   constructor(name?: string, stepPrint?: boolean) {
     this.name = name || '';
@@ -57,7 +57,8 @@ export class TimeCalc {
       this.print(index + '-' + d.name, d.t - last);
       last = d.t;
     });
-    this.print('共执行', this.getLast()?.t - this.start);
+    this.allRuntime = this.msParse(this.getLast()?.t - this.start);
+    this.print('共执行', this.allRuntime);
     this.init();
   }
 

@@ -7,16 +7,17 @@ import {
   imgFileConvResult,
 } from '@rtwc/comm';
 
-interface ImageConvResult extends imgFileConvResult {
+export interface ImageConvResult extends imgFileConvResult {
   inputFile: File;
 }
 
-interface resp {
+export interface ImageFileThumbnailGenerateReturn {
   setFile: (f: File) => void;
   result?: ImageConvResult;
   src?: string;
   originSrc?: string;
   thumbnailSrc?: string;
+  progress?: number; // 处理进度
 }
 
 interface options extends imgFileConvOptions {
@@ -24,13 +25,17 @@ interface options extends imgFileConvOptions {
 }
 
 // 自动图片预览图自动生成
-const useImageFileThumbnailGenerate = (f?: File, params?: options): resp => {
+const useImageFileThumbnailGenerate = (
+  f?: File,
+  params?: options,
+): ImageFileThumbnailGenerateReturn => {
   const p = { ...DefaultImgFileConvOptions, ...params };
   const [file, setFile] = useState<File>();
   // 输入图片的src
   const [inputSrc, setInputSrc] = useState<string>();
   // 原图src地址
   const [originSrc, setOriginSrc] = useState<string>();
+  const [progress, setProgress] = useState<number>(0);
   // 预览图src地址
   const [thumbnailSrc, setThumbnailSrc] = useState<string>();
   const [result, setResult] = useState<ImageConvResult>();
@@ -44,7 +49,7 @@ const useImageFileThumbnailGenerate = (f?: File, params?: options): resp => {
   const onRun = async (input: File) => {
     // 先生成一个原图的预览
     setInputSrc(fastFileGetSrc(input));
-    const filesGen = await fastImageGenThumbnail(input, { ...p });
+    const filesGen = await fastImageGenThumbnail(input, { ...p, onProgress: setProgress });
     setResult({
       ...filesGen,
       inputFile: input,
@@ -85,6 +90,7 @@ const useImageFileThumbnailGenerate = (f?: File, params?: options): resp => {
     src: inputSrc,
     originSrc: originSrc,
     thumbnailSrc: thumbnailSrc,
+    progress,
   };
 };
 

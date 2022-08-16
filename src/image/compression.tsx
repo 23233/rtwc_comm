@@ -2,10 +2,13 @@ import imageCompression from 'browser-image-compression';
 import { getFileNameSuffix } from './tools';
 import { TimeCalc } from '../utils/funcTime';
 
+/* 在支持bitmap的情况下 优先使用bitmap 核心是获取width 和 height */
+export type ImageGetTargetBuffer = HTMLImageElement | ImageBitmap;
+
 export function fastLoadImageBuffer(
   imageBuffer: ArrayBuffer,
   type: string,
-): Promise<HTMLImageElement | ImageBitmap> {
+): Promise<ImageGetTargetBuffer> {
   return new Promise((resolve, reject) => {
     const blob = new window.Blob([imageBuffer], { type });
     if (createImageBitmap) {
@@ -66,6 +69,8 @@ export interface imgFileConvResult {
   originFile: File;
   originChange: boolean;
   thumbnailFile: File;
+  /* 在DEBUG模式下返回 执行花费总ms */
+  progressMs?: number;
 }
 
 export interface imgFileConvOptions {
@@ -75,12 +80,16 @@ export interface imgFileConvOptions {
   previewSuffix?: string;
   /* 默认为0 即不压缩 存在 则会压缩原图宽高为设置值 取宽或高最大值 */
   originMaxWh?: number;
+  onProgress?: (progress: number) => void;
+  /* 调试模式 默认为false */
+  debug?: boolean;
 }
 
 export const DefaultImgFileConvOptions: imgFileConvOptions = {
   previewMax: 375,
   previewSuffix: '_tm_',
   originMaxWh: 0,
+  debug: false,
 };
 
 // 快速图片预览图生成 大约比未使用web work速度快20% 但是体验好50%+
@@ -88,7 +97,7 @@ export const fastImageGenThumbnail = async (
   file: File,
   options?: imgFileConvOptions,
 ): Promise<imgFileConvResult> => {
-  const calc = new TimeCalc('图片生成计时');
+  const calc = new TimeCalc('图片生成 ' + file.name);
   let op = { ...DefaultImgFileConvOptions };
   if (!!options) {
     op = { ...op, ...options };
@@ -125,17 +134,22 @@ export const fastImageGenThumbnail = async (
   const tFile = await fastImageFileCompression(file, {
     maxWidthOrHeight: op?.previewMax,
     fileType: 'image/' + autoSuffix,
+    onProgress: op?.onProgress,
   });
   calc.addStep('预览图生成结束');
 
   const nf = new File([tFile], previewName);
   calc.addStep('预览图新文件名生成结束');
-  // calc.log()
-  return {
+  const result: imgFileConvResult = {
     originFile: tr || file,
     originChange: !!tr,
     thumbnailFile: nf,
   };
+  if (op?.debug) {
+    calc.log();
+    result.progressMs = calc.allRuntime;
+  }
+  return result;
 };
 
 // 图片文件快速生成BLOB进行预览

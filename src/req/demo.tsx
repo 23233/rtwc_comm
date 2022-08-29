@@ -29,7 +29,7 @@ const V: React.FC<p> = ({ ...props }) => {
   };
 
   const a = new RestParams();
-  a.Page(1).And('and', '中文').Or('or', 'or').SortDesc('_id').OpIn('tags', ['c', 'b']);
+  a.Page(1).And('and', '中文').Or('or', 'or').SortDesc('_id', '_di').OpIn('tags', ['c', 'b']);
 
   return (
     <div>

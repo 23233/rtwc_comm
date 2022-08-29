@@ -164,13 +164,13 @@ export class RestParams {
     return this;
   }
 
-  SortAsc(field: string) {
-    this.u.set('_o', field);
+  SortAsc(...fields: Array<string>) {
+    this.u.set('_o', fields.join(','));
     return this;
   }
 
-  SortDesc(field: string) {
-    this.u.set('_od', field);
+  SortDesc(...fields: Array<string>) {
+    this.u.set('_od', fields.join(','));
     return this;
   }
 
